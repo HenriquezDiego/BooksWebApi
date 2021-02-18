@@ -52,6 +52,7 @@ namespace BooksWebApi.Controllers
             return Ok(clientes);
         }
 
+        [HttpPost]
         public IActionResult Post([FromBody] ClienteInput cliente)
         {
             var command = new SqlCommand
@@ -67,9 +68,10 @@ namespace BooksWebApi.Controllers
             var lastId = 0;
             using(var reader = sqlCommand.ExecuteReader())
             {
-                while (reader.Read())
+                if (reader.Read())
                 {
                     lastId = int.Parse(reader[0].ToString()??"0");
+                    lastId++;
                 }
             }
 
@@ -80,10 +82,13 @@ namespace BooksWebApi.Controllers
             command.Parameters.AddWithValue("@fecha", cliente.FechaNacimiento);
             command.Parameters.AddWithValue("@telefono", cliente.Telefono);
             command.Parameters.AddWithValue("@email", cliente.Email);
+            command.Connection = _connectionService.GetConnection();
+
 
             var executeNonQuery = command.ExecuteNonQuery();
             if (executeNonQuery > 0)
             {
+                _connectionService.Close();
                 return Ok();
             }
 

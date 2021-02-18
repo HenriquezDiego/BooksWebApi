@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace BooksWebApi
 {
@@ -19,7 +21,25 @@ namespace BooksWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(options => options.EnableEndpointRouting = false);
+            services.AddControllers(options => options.EnableEndpointRouting = false)
+                .AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.Formatting = Formatting.Indented;
+                    opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft
+                    .OpenApi
+                    .Models
+                    .OpenApiInfo
+                    {
+                        Title = "TransaccionesWebApi",
+                        Version = "v1"
+                    });
+            });
+
             services.AddScoped<IConnectionService, ConnectionService>();
         }
 
@@ -34,7 +54,11 @@ namespace BooksWebApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TransaccionesWebApi");
+            });
             app.UseMvc();
         }
     }
