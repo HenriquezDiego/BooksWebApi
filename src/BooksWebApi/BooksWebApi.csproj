@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>91d638b7-6daf-47a7-a6d7-7e39ac4784f7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\BooksWebApi.DataAccess\BooksWebApi.DataAccess.csproj" />
   </ItemGroup>
 
 
