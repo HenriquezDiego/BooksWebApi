@@ -1,6 +1,7 @@
 using System;
 using AutoMapper;
 using BooksWebApi.DataAccess.Data;
+using BooksWebApi.DataAccess.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -45,6 +46,9 @@ namespace BooksWebApi
             });
 
             services.AddScoped<IConnectionService, ConnectionService>();
+            services.AddScoped<ILibroRepository, LibroRepository>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IPedidoRepository, PedidoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

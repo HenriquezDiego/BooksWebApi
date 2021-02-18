@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using BooksWebApi.Inputs;
 using BooksWebApi.Models.Entities;
 
 namespace BooksWebApi.WiewModels.Config
@@ -15,6 +16,9 @@ namespace BooksWebApi.WiewModels.Config
             CreateMap<string, string>().ConstructUsing(x => x.Trim());
 
             CreateMap<Cliente, ClienteViewModel>();
+            CreateMap<ClienteInput, Cliente>();
+            CreateMap<LibroInput, Libro>();
+            CreateMap<PedidoInput, Pedido>();
         }
     }
 }

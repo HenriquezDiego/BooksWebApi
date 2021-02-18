@@ -76,7 +76,7 @@ namespace BooksWebApi.DataAccess.Repositories
             return clientes;
         }
 
-        public bool Insert(Cliente entity)
+        public (bool,int) Insert(Cliente entity)
         {
             var command = new SqlCommand
             {
@@ -111,7 +111,7 @@ namespace BooksWebApi.DataAccess.Repositories
             var executeNonQuery = command.ExecuteNonQuery();
             _connectionService.Close();
 
-            return executeNonQuery <= 0;
+            return (executeNonQuery <= 0,lastId);
         }
 
         public bool Delete(int id)

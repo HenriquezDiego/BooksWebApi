@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace BooksWebApi.Models.Entities
+namespace BooksWebApi.Inputs
 {
-    public class Pedido
+    public class PedidoInput
     {
-        public int PedidoId { get; set; }
         public int ClienteId { get; set; }
         public int LibroId { get; set; }
         public DateTime Fecha { get; set; }
