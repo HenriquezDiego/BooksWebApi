@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using BooksWebApi.DataAccess.Data;
+using BooksWebApi.Inputs;
 using BooksWebApi.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,6 +50,44 @@ namespace BooksWebApi.Controllers
 
             _connectionService.Close();
             return Ok(clientes);
+        }
+
+        public IActionResult Post([FromBody] ClienteInput cliente)
+        {
+            var command = new SqlCommand
+            {
+                CommandText = "INSERT INTO Clientes VALUES(@clienteId,@nombres,@apellidos,@fecha,@telefono,@email)"
+            };
+
+            var sqlCommand = new SqlCommand("select top(1) clienteId from Clientes order by clienteId DESC", _connectionService.GetConnection())
+            {
+                CommandType = CommandType.Text
+            };
+            _connectionService.Open();
+            var lastId = 0;
+            using(var reader = sqlCommand.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    lastId = int.Parse(reader[0].ToString()??"0");
+                }
+            }
+
+
+            command.Parameters.AddWithValue("@clienteId",lastId);
+            command.Parameters.AddWithValue("@nombres", cliente.Nombres);
+            command.Parameters.AddWithValue("@apellidos", cliente.Apellidos);
+            command.Parameters.AddWithValue("@fecha", cliente.FechaNacimiento);
+            command.Parameters.AddWithValue("@telefono", cliente.Telefono);
+            command.Parameters.AddWithValue("@email", cliente.Email);
+
+            var executeNonQuery = command.ExecuteNonQuery();
+            if (executeNonQuery > 0)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }
