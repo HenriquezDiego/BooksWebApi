@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using AutoMapper;
 using BooksWebApi.DataAccess.Data;
 using BooksWebApi.Inputs;
 using BooksWebApi.Models.Entities;
+using BooksWebApi.WiewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BooksWebApi.Controllers
@@ -14,10 +16,13 @@ namespace BooksWebApi.Controllers
     public class ClientesController : ControllerBase
     {
         private readonly IConnectionService _connectionService;
+        private readonly IMapper _mapper;
 
-        public ClientesController(IConnectionService connectionService)
+        public ClientesController(IConnectionService connectionService,
+            IMapper mapper)
         {
             _connectionService = connectionService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -49,7 +54,7 @@ namespace BooksWebApi.Controllers
             }
 
             _connectionService.Close();
-            return Ok(clientes);
+            return Ok(_mapper.Map<IEnumerable<ClienteViewModel>>(clientes));
         }
 
         [HttpPost]
