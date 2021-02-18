@@ -91,13 +91,10 @@ namespace BooksWebApi.Controllers
 
 
             var executeNonQuery = command.ExecuteNonQuery();
-            if (executeNonQuery > 0)
-            {
-                _connectionService.Close();
-                return Ok();
-            }
+            if (executeNonQuery <= 0) return BadRequest();
+            _connectionService.Close();
+            return Ok();
 
-            return BadRequest();
         }
     }
 }

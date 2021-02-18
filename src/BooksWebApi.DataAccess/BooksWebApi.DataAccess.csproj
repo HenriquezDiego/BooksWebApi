@@ -13,8 +13,4 @@
     <ProjectReference Include="..\BooksWebApi.Models\BooksWebApi.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>
