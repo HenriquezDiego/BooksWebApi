@@ -9,12 +9,11 @@ namespace BooksWebApi.WiewModels.Config
     {
         public MappingProfile()
         {
+            CreateMap<string, string>()
+                .AfterMap((x,y)=> x??= string.Empty)
+                .ConstructUsing(x => x.Trim());
             CreateMap<DateTime, string>()
                 .ConvertUsing(x => x.ToString(@"dd/MM/yyyy"));
-
-
-            CreateMap<string, string>().ConstructUsing(x => x.Trim());
-
             CreateMap<Cliente, ClienteViewModel>();
             CreateMap<ClienteInput, Cliente>();
             CreateMap<LibroInput, Libro>();

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BooksWebApi.WiewModels
+﻿namespace BooksWebApi.WiewModels
 {
     public class ClienteViewModel
     {
